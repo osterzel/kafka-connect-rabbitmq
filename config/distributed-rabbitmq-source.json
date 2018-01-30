@@ -1,0 +1,8 @@
+{
+        "connector.class": "com.github.jcustenborder.kafka.connect.rabbitmq.RabbitMQSourceConnector",
+        "kafka.topic":"rabbit.test",
+        "rabbitmq.queue":"test",
+        "rabbitmq.host": "rabbitmq",
+        "rabbitmq.username": "guest",
+        "rabbitmq.password": "guest"
+}
