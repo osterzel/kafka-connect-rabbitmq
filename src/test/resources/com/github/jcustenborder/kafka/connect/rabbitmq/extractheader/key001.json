@@ -6,6 +6,8 @@
     "sourceOffset": {
       "deliveryTag": 1
     },
+    "kafkaPartition": 0,
+    "headers": [],
     "topic": "testing",
     "keySchema": {
       "name": "com.github.jcustenborder.kafka.connect.rabbitmq.MessageKey",

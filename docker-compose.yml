@@ -21,8 +21,6 @@ services:
     depends_on:
       - zookeeper
       - kafka
-      - schema-registry
-      - rabbitmq
     environment:
       CONNECT_BOOTSTRAP_SERVERS: kafka:29092 
       CONNECT_REST_PORT: 28082 
@@ -72,18 +70,8 @@ services:
     ports:
       - '9092:9092'
       - '29092:29092'
-  schema-registry:
-    image: confluentinc/cp-schema-registry:4.0.0
-    environment:
-      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-    depends_on:
-          - zookeeper
-          - kafka
-    ports:
-      - '8081:8081'
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - '15672:15672'
-      - '5672:5672'
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    ports:
+#      - '15672:15672'
+#      - '5672:5672'

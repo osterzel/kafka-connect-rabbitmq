@@ -18,6 +18,7 @@ package com.github.jcustenborder.kafka.connect.rabbitmq;
 import com.google.common.collect.ImmutableMap;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Envelope;
+//import org.apache.kafka.common.protocol.types.Schema;
 import org.apache.kafka.common.utils.SystemTime;
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.connect.data.Struct;
@@ -35,6 +36,7 @@ class SourceRecordBuilder {
     Struct key = MessageConverter.key(basicProperties);
     Struct value = MessageConverter.value(consumerTag, envelope, basicProperties, bytes);
     final String topic = this.config.kafkaTopic.execute(RabbitMQSourceConnectorConfig.KAFKA_TOPIC_TEMPLATE, value);
+    String messageBody = value.getString("body");
 
     return new SourceRecord(
         ImmutableMap.of("routingKey", envelope.getRoutingKey()),
@@ -43,8 +45,8 @@ class SourceRecordBuilder {
         null,
         key.schema(),
         key,
-        value.schema(),
-        value,
+        org.apache.kafka.connect.data.Schema.STRING_SCHEMA,
+        messageBody,
         null == basicProperties.getTimestamp() ? this.time.milliseconds() : basicProperties.getTimestamp().getTime()
     );
   }

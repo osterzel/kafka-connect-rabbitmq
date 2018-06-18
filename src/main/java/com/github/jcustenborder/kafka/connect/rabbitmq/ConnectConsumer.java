@@ -67,8 +67,11 @@ class ConnectConsumer implements Consumer {
   public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
     log.trace("handleDelivery({})", consumerTag);
 
-    SourceRecord sourceRecord = this.sourceRecordBuilder.sourceRecord(consumerTag, envelope, basicProperties, bytes);
-    this.records.add(sourceRecord);
+    String bodystring = new String(bytes);
+    if (!bodystring.contains("/ping/ping")) {
+      SourceRecord sourceRecord = this.sourceRecordBuilder.sourceRecord(consumerTag, envelope, basicProperties, bytes);
+      this.records.add(sourceRecord);
+    }
   }
 
 

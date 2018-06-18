@@ -253,27 +253,23 @@ class MessageConverter {
         .put(FIELD_BASIC_PROPERTIES_APPID, basicProperties.getAppId());
   }
 
+  static final String FIELD_MESSAGE_BODY = "body";
   static final String FIELD_MESSAGE_CONSUMERTAG = "consumerTag";
   static final String FIELD_MESSAGE_ENVELOPE = "envelope";
   static final String FIELD_MESSAGE_BASICPROPERTIES = "basicProperties";
-  static final String FIELD_MESSAGE_BODY = "body";
 
 
   static final Schema SCHEMA_VALUE = SchemaBuilder.struct()
       .name("com.github.jcustenborder.kafka.connect.rabbitmq.Message")
       .doc("Message as it is delivered to the `RabbitMQ Consumer <https://www.rabbitmq.com/releases/rabbitmq-java-client/current-javadoc/com/rabbitmq/client/Consumer.html#handleDelivery-java.lang.String-com.rabbitmq.client.Envelope-com.rabbitmq.client.AMQP.BasicProperties-byte:A->`_ ")
-      .field(FIELD_MESSAGE_CONSUMERTAG, SchemaBuilder.string().doc("The consumer tag associated with the consumer").build())
-      .field(FIELD_MESSAGE_ENVELOPE, SCHEMA_ENVELOPE)
-      .field(FIELD_MESSAGE_BASICPROPERTIES, SCHEMA_BASIC_PROPERTIES)
-      .field(FIELD_MESSAGE_BODY, SchemaBuilder.bytes().doc("The value body (opaque, client-specific byte array)").build())
+      .field(FIELD_MESSAGE_BODY, SchemaBuilder.string().doc("The value body (opaque, client-specific byte array)").build())
       .build();
 
   static Struct value(String consumerTag, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] body) {
+    String bodystring = new String(body);
+
     return new Struct(SCHEMA_VALUE)
-        .put(FIELD_MESSAGE_CONSUMERTAG, consumerTag)
-        .put(FIELD_MESSAGE_ENVELOPE, envelope(envelope))
-        .put(FIELD_MESSAGE_BASICPROPERTIES, basicProperties(basicProperties))
-        .put(FIELD_MESSAGE_BODY, body);
+        .put(FIELD_MESSAGE_BODY, bodystring);
   }
 
   static Struct key(AMQP.BasicProperties basicProperties) {
